@@ -45,7 +45,7 @@ var brfv4BaseURL = 'static/BRFv4Demo/libs/brf_wasm/';
     }
   }
 
-  if (!support) { brfv4BaseURL = 'js/libs/brf_asmjs/'; }
+  if (!support) { brfv4BaseURL = 'static/BRFv4Demo/libs/brf_asmjs/'; }
 
   console.log('Checking support of WebAssembly: ' + support + ' ' + (support ? 'loading WASM (not ASM).' : 'loading ASM (not WASM).'));
 

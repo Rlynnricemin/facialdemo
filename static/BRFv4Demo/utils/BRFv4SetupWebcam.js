@@ -44,7 +44,8 @@
 
 		trace("webcam.startStream: try: " +
 		webcam.constraints.video.width + "x" + webcam.constraints.video.height);
-		
+		// webcam.constraints
+		console.log(webcam.constraints)
 		window.navigator.mediaDevices.getUserMedia(webcam.constraints)
 			.then (webcam.onStreamFetched)
 			.catch(webcam.onStreamError);
@@ -183,7 +184,7 @@
 			_imageDataCtx.setTransform(-1.0, 0, 0, 1, resolution.width, 0); // mirrored
 			// 画圆形
 			_imageDataCtx.save();
-			_imageDataCtx.arc(125, 125, 120, 0, 2 * Math.PI);
+			_imageDataCtx.arc(160, 120, 120, 0, 2 * Math.PI);
 			_imageDataCtx.clip();
 			
 			_imageDataCtx.drawImage(webcamVideo, 0, 0, resolution.width, resolution.height);

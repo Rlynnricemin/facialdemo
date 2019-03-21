@@ -7,7 +7,10 @@
   var isTurnHead = {
 	  status: false,
 	  prepercent: ''
-  } // 是否摇头
+	} // 是否摇头
+	var isOpenmouth = {
+		status: false
+	}
 
 
   var detection = 0; // 0 正视前方 1 正视左右摇头  2正视张开嘴巴
@@ -24,8 +27,8 @@
     // We limit the face detection region of interest to be in the central
     // part of the overall analysed image (green rectangle).
     _faceDetectionRoi.setTo(
-      resolution.width * 0, resolution.height * 0,
-      resolution.width * 1, resolution.height * 1
+      resolution.width * 0.125, resolution.height * 0,
+      resolution.width * 0.75, resolution.height * 1
     );
     brfManager.setFaceDetectionRoi(_faceDetectionRoi);
 
@@ -93,8 +96,10 @@
 		if (detection === 0) {
 			if (!fircut) {
 				fircut = true
+				// 保留图像
 				let img = document.createElement("img");
 				img.src = document.getElementById('_imageData').toDataURL("image/png");
+				brfv4Example.cutImage = img
 				// document.body.appendChild(img);//写入到Dom
 			}
 			if (brfv4Example.stopCheckImg && fircut) {
@@ -114,9 +119,6 @@
     				Math.abs(face.rotationZ)
     			)
 			);
-			// var maxRot = brfv4.BRFv4PointUtils.toDegree(
-    		// 	Math.abs(face.rotationX)
-    		// );
 
 			var percent = maxRot / 20.0;
 			
@@ -127,13 +129,13 @@
 			}
 			isTurnHead.prepercent = percent
 
-    		if(percent < 0.0) { percent = 0.0; }
+    	if(percent < 0.0) { percent = 0.0; }
 			if(percent > 1.0) { percent = 1.0; }
-    		// 当percent越接近1证明转头越厉害
+    	// 当percent越接近1证明转头越厉害
 			// 当pecent越接近0.1越居中
-    		// var color =
-    		// 	(((0xff * percent) & 0xff) << 16) +
-    		// 	(((0xff * (1.0 - percent) & 0xff) << 8));
+			// var color =
+			// 	(((0xff * percent) & 0xff) << 16) +
+			// 	(((0xff * (1.0 - percent) & 0xff) << 8));
 
     		// 页面的辅助线
     		// draw.drawTriangles(	face.vertices, face.triangles, false, 1.0, color, 0.4);
@@ -165,14 +167,15 @@
 			if(yawnFactor < 0.0) { yawnFactor = 0.0; }
 			if(yawnFactor > 1.0) { yawnFactor = 1.0; }
 
-			if (yawnFactor > 0.2 && brfv4Example.stopCheckImg) {
+			if (yawnFactor > 0.2 && brfv4Example.stopCheckImg && !isOpenmouth.status) {
 				brfv4Example.callback('event03', 'success')
+				isOpenmouth.status = true
 			}
 			// Let the color show you how much you yawn.
 	
-			// var color =
-			// 			(((0xff * (1.0 - yawnFactor) & 0xff) << 16)) +
-			// 			(((0xff * yawnFactor) & 0xff) << 8);
+			var color =
+						(((0xff * (1.0 - yawnFactor) & 0xff) << 16)) +
+						(((0xff * yawnFactor) & 0xff) << 8);
 	
 			// Face Tracking results: 68 facial feature points.
 	
@@ -185,21 +188,15 @@
       }
     }
 
-    // 保存视频一贞的方法
-    // 	let img = document.createElement("img");
-    // img.src = document.getElementById('_imageData').toDataURL("image/png");
-    // document.body.appendChild(img);//写入到Dom
-
-
     // Check, if the face is too close or too far way and tell the user what to do.
 
     if(!oneFaceTracked && mergedFaces.length > 0) {
 
 	  var mergedFace = mergedFaces[0];
-	//   console.log(mergedFace.width / _faceDetectionRoi.width)
+	  //   console.log(mergedFace.width / _faceDetectionRoi.width)
 
 	  if(mergedFace.width < _faceDetectionRoi.width * 0.30) { // startMinFaceSize
-		console.log('太近')
+				console.log('太近')
         brfv4Example.dom.updateHeadline("BRFv4 - basic - face tracking - restrict to frontal and center\n" +
 					"Only track a face if it is in a certain distance. Come closer.");
 

@@ -18,8 +18,8 @@
 
 	var dom			= brfv4Example.dom;
 
-	dom.stageWidth	= 500;
-	dom.stageHeight	= 500;
+	dom.stageWidth	= 320;
+	dom.stageHeight	= 240;
 
 	dom.updateLayout = function(width, height) {
 	

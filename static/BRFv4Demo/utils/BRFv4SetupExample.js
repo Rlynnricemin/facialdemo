@@ -97,7 +97,7 @@
 			}
 
 			if(brfv4.Rectangle && !resolution) {
-				resolution	= new brfv4.Rectangle(0, 0, 250, 250);
+				resolution	= new brfv4.Rectangle(0, 0, 320, 240);
 				// resolution	= new brfv4.Rectangle(0, 0, 640, 480);
 			}
 
@@ -132,7 +132,7 @@
 			} else {
 
 				// resolution.setTo(0, 0, 640, 480); // reset for webcam initialization
-				resolution.setTo(0, 0, 250, 250); // reset for webcam initialization
+				resolution.setTo(0, 0, 320, 240); // reset for webcam initialization
 				imageData.init();
 			}
 		}
