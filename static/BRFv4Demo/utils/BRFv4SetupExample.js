@@ -7,7 +7,7 @@
 // + Reinit if image data size changes
 
 (function() {
-	"use strict";
+	console.log('aaaaaa')
 
 	var example		= brfv4Example;
 

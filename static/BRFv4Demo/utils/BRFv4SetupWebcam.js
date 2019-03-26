@@ -184,6 +184,7 @@
 			_imageDataCtx.clip();
 			// resolution.width
 			_imageDataCtx.drawImage(webcamVideo, 0, 0, resolution.width, resolution.height);
+			_imageDataCtx.restore();
 		};
 	};
 })();
