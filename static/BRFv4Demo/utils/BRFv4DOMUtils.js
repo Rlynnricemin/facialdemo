@@ -27,7 +27,6 @@
 
 		dom.stageWidth	= width;
 		dom.stageHeight	= height;
-	
 		var getElement			= dom.getElement;
 		var updateElementSize	= dom.updateElementSize;
 	
@@ -146,7 +145,7 @@
 		}
 	};
 
-	dom.createElement = function(htmlTag, id, width, height, parent) {
+	dom.updateElementSize = function(htmlTag, id, width, height, parent) {
 
 		var tag = null;
 
@@ -177,7 +176,6 @@
 	};
 	
 	dom.createCanvas = function(id, width, height, parent) {
-		console.log('width', width)
 		var tag = document.getElementById(id);
 
 		if(!tag) {	// Not found? Create it.

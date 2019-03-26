@@ -22,6 +22,7 @@ var brfv4Example = {
 };
 
 var brfv4BaseURL = 'static/BRFv4Demo/libs/brf_wasm/';
+var basePath = 'https://sit.citiccard.hunshitong.net/citiccard/frontend/facialdemo/';
 
 (function() {
 
@@ -67,7 +68,7 @@ brfv4Example.start = function() {
 
     brfv4BaseURL + 'BRFv4_JS_TK210219_v4.2.0_trial.js',						// BRFv4 SDK
 
-    'https://webrtc.github.io/adapter/adapter-latest.js',	// webcam polyfill for older browsers
+    'static/BRFv4Demo/utils/adapter-latest.js',	// webcam polyfill for older browsers
 
     // "js/libs/quicksettings/quicksettings.min.css",			// gui elements
     // "js/libs/quicksettings/quicksettings.js",
@@ -76,16 +77,16 @@ brfv4Example.start = function() {
     // "js/libs/highlight/highlight.pack.js",
 
     'static/BRFv4Demo/libs/createjs/easeljs.min.js',						// canvas drawing lib
-    'static/BRFv4Demo/libs/threejs/three.min.js',							// ThreeJS: a 3D engine
+    // 'static/BRFv4Demo/libs/threejs/three.min.js',							// ThreeJS: a 3D engine
 
     'static/BRFv4Demo/utils/BRFv4DOMUtils.js',							// DOM handling
     // "js/utils/BRFv4Stats.js",								// FPS meter
 
     'static/BRFv4Demo/utils/BRFv4DrawingUtils_CreateJS.js',				// BRF result drawing
-    'static/BRFv4Demo/utils/BRFv4Drawing3DUtils_ThreeJS.js',				// ThreeJS 3d object placement.
+    // 'static/BRFv4Demo/utils/BRFv4Drawing3DUtils_ThreeJS.js',				// ThreeJS 3d object placement.
 
     'static/BRFv4Demo/utils/BRFv4SetupWebcam.js',							// webcam handling
-    'static/BRFv4Demo/utils/BRFv4SetupPicture.js',						// picture/image handling
+    // 'static/BRFv4Demo/utils/BRFv4SetupPicture.js',						// picture/image handling
     'static/BRFv4Demo/utils/BRFv4SetupExample.js',						// overall example setup
 
     'static/BRFv4Demo/utils/BRFv4PointUtils.js',							// some calculation helpers
@@ -131,6 +132,7 @@ brfv4Example.trace = function(msg, error) {
   var loader = brfv4Example.loader;
 
   loader.preload = function (filesToLoad, callback) {
+    debugger
 
     if (loader.queuePreloader !== null || !filesToLoad) {
       return;
@@ -154,6 +156,7 @@ brfv4Example.trace = function(msg, error) {
   loader.loadExample = function (filesToLoad, callback) {
 
     function onProgress(event) {
+      console.log('event.loaded', event.loaded)
       loader.setProgressBar(event.loaded, true);
     }
 
@@ -170,17 +173,17 @@ brfv4Example.trace = function(msg, error) {
 
   loader.setProgressBar = function(percent, visible) {
 
-    var bar = document.getElementById('_progressBar');
-    if(!bar) return;
+    // var bar = document.getElementById('_progressBar');
+    // if(!bar) return;
 
     if(percent < 0.0) percent = 0.0;
     if(percent > 1.0) percent = 1.0;
+    console.log('percent', percent)
+    // var width = Math.round(percent * 320);
+    // var color = 0xe7e7e7;
 
-    var width = Math.round(percent * 640);
-    var color = 0xe7e7e7;
-
-    bar.style.width = width + 'px';
-    bar.style.backgroundColor = '#' + color.toString(16);
-    bar.style.display = visible ? 'block' : 'none';
+    // bar.style.width = width + 'px';
+    // bar.style.backgroundColor = '#' + color.toString(16);
+    // bar.style.display = visible ? 'block' : 'none';
   };
 })();

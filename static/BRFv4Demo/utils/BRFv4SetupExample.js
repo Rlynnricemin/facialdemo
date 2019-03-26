@@ -182,11 +182,9 @@
 		if(imageData.isStream()) {
 
 			// webcam continuous update.
-
 			drawing.setUpdateCallback(updateBRFExample);
 
 		} else {
-
 			// Simply update 10 times for loaded images.
 			// This is not the most sophisticated approach, but
 			// will most likely do the job.
@@ -212,10 +210,13 @@
 		}
 	}
 
+	example.stop =  () => {
+		paused = true;
+		window.brfv4Example.drawing.stage.removeEventListener('tick', window.brfv4Example.drawing.onUpdateCallback)
+	}
+
 	function updateBRFExample() {
-
 		if(!paused) {
-
 			if (stats.start) stats.start();
 
 			var imageDataCanvas	= dom.getElement("_imageData");

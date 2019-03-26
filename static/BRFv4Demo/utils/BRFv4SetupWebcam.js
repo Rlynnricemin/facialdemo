@@ -29,7 +29,7 @@
 		trace("webcam.setupStream: isPlaying: " + webcam.isPlaying);
 
 		webcam.video			= video;
-		webcam.constraints		= {video: {width: width, height: height, frameRate: fps}};
+		webcam.constraints		= {video: {'facingMode': 'user', width: width, height: height, frameRate: fps}};
 		webcam.onCameraReady	= callback;
 
 		webcam.startStream();
@@ -38,14 +38,10 @@
 	webcam.startStream = function() {
 
 		webcam.stopStream();
-		// console.log(webcam.constraints)
-		// webcam.constraints.video.width = 640
-		// webcam.constraints.video.height = 480
 
 		trace("webcam.startStream: try: " +
 		webcam.constraints.video.width + "x" + webcam.constraints.video.height);
 		// webcam.constraints
-		console.log(webcam.constraints)
 		window.navigator.mediaDevices.getUserMedia(webcam.constraints)
 			.then (webcam.onStreamFetched)
 			.catch(webcam.onStreamError);
@@ -56,6 +52,7 @@
 		if(webcam.isPlaying) {
 			trace("webcam.stopStream: isPlaying: " + webcam.isPlaying);
 		}
+		
 
 		webcam.isPlaying = false;
 
@@ -179,14 +176,13 @@
 					webcam.setupStream(webcam.video, webcam.constraints.video.width, webcam.constraints.video.height, 30, null);
 				}, 2000)
 			}
-
 			var _imageDataCtx = imageDataCanvas.getContext("2d");
 			_imageDataCtx.setTransform(-1.0, 0, 0, 1, resolution.width, 0); // mirrored
 			// 画圆形
 			_imageDataCtx.save();
 			_imageDataCtx.arc(160, 120, 120, 0, 2 * Math.PI);
 			_imageDataCtx.clip();
-			
+			// resolution.width
 			_imageDataCtx.drawImage(webcamVideo, 0, 0, resolution.width, resolution.height);
 		};
 	};
