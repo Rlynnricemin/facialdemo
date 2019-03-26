@@ -70,7 +70,7 @@
 			}, 100);
 		}
 	};
-
+	console.log('加载到这')
 	// Setup BRF and the imageData by chosen type (webcam/picture).
 	example.init = function(type) {
 

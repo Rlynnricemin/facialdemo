@@ -132,7 +132,6 @@ brfv4Example.trace = function(msg, error) {
   var loader = brfv4Example.loader;
 
   loader.preload = function (filesToLoad, callback) {
-    debugger
 
     if (loader.queuePreloader !== null || !filesToLoad) {
       return;
