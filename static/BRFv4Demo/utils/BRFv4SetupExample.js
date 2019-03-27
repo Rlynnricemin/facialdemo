@@ -114,7 +114,10 @@
 				);
 
 			} else {				// ... or start using the webcam.
-
+				var _imageDataCtx = brfv4Example.dom.getElement("_imageData").getContext("2d");
+				_imageDataCtx.save();
+				_imageDataCtx.arc(160, 120, 120, 0, 2 * Math.PI);
+				_imageDataCtx.clip();
 				imageData.webcam.setup(
 					dom.getElement("_webcam"),
 					dom.getElement("_imageData"),

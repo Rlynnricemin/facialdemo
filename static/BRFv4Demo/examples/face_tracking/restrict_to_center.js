@@ -17,7 +17,8 @@
 
   brfv4Example.initCurrentExample = function(brfManager, resolution) {
 
-    brfManager.init(resolution, resolution, brfv4Example.appId);
+		brfManager.init(resolution, resolution, brfv4Example.appId);
+		
 
     // Sometimes you want to restrict the position and pose of a face.
 
@@ -63,7 +64,11 @@
 	var getRandom = function (exp) {
 		let result = Math.random()*2.9+1;
 		if (exp && Math.floor(result) === exp) {
-			result = result > exp ? (exp + 1) : (exp - 1);
+			if (exp === 3 && Math.floor(result) === exp) {
+				result = 2
+			} else {
+				result = result > exp ? (exp + 1) : (exp - 1);
+			}
 		} else {
 			result = Math.floor(result)
 		}
@@ -192,11 +197,13 @@
 			if(yawnFactor > 1.0) { yawnFactor = 1.0; }
 			
 			// brfv4Example.stopCheckImg &&
-			let yawnresult = yawnFactor > 0.2 && !isOpenmouth.status && brfv4Example.stopCheckImg !== false
+			let yawnresult = yawnFactor > 0.05 && !isOpenmouth.status 
 			if (yawnresult) {
+				isOpenmouth.status = true
+			}
+			if (isOpenmouth.status && brfv4Example.stopCheckImg !== false ) {
 				detection = getRandom(2)
 				brfv4Example.callback('event03', 'success', detection)
-				isOpenmouth.status = true
 			}
 			if (brfv4Example.stopCheckImg === true && !yawnresult) {
 				brfv4Example.callback('event03', 'error')
@@ -288,8 +295,8 @@
 	
 	function blink() {
 		_blinked = true;
-		if(_timeOut > -1) { clearTimeout(_timeOut); }
-		_timeOut = setTimeout(resetBlink, 150);
+		// if(_timeOut > -1) { clearTimeout(_timeOut); }
+		// _timeOut = setTimeout(resetBlink, 150);
 	}
 
 	function resetBlink() {

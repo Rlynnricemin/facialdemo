@@ -29,7 +29,14 @@
 		trace("webcam.setupStream: isPlaying: " + webcam.isPlaying);
 
 		webcam.video			= video;
-		webcam.constraints		= {video: {'facingMode': 'user', width: width, height: height, frameRate: fps}};
+		webcam.constraints		= {
+			video: {
+				'facingMode': 'user',
+				width: { min: 320, ideal: 320, max: 640 },
+				height: { min: 240, ideal: 240, max: 320 }
+			}
+		};
+		// , width: width, height: height, frameRate: fps
 		webcam.onCameraReady	= callback;
 
 		webcam.startStream();
@@ -177,14 +184,16 @@
 				}, 2000)
 			}
 			var _imageDataCtx = imageDataCanvas.getContext("2d");
+			// _imageDataCtx.fillRect(resolution.width, resolution.height)
 			_imageDataCtx.setTransform(-1.0, 0, 0, 1, resolution.width, 0); // mirrored
 			// 画圆形
-			_imageDataCtx.save();
-			_imageDataCtx.arc(160, 120, 120, 0, 2 * Math.PI);
-			_imageDataCtx.clip();
+			// _imageDataCtx.save();
+			
 			// resolution.width
 			_imageDataCtx.drawImage(webcamVideo, 0, 0, resolution.width, resolution.height);
-			_imageDataCtx.restore();
+			// _imageDataCtx.arc(160, 120, 120, 0, 2 * Math.PI);
+			// _imageDataCtx.clip();
+			// _imageDataCtx.restore();
 		};
 	};
 })();
