@@ -184,16 +184,10 @@
 				}, 2000)
 			}
 			var _imageDataCtx = imageDataCanvas.getContext("2d");
-			// _imageDataCtx.fillRect(resolution.width, resolution.height)
 			_imageDataCtx.setTransform(-1.0, 0, 0, 1, resolution.width, 0); // mirrored
-			// 画圆形
-			// _imageDataCtx.save();
 			
 			// resolution.width
 			_imageDataCtx.drawImage(webcamVideo, 0, 0, resolution.width, resolution.height);
-			// _imageDataCtx.arc(160, 120, 120, 0, 2 * Math.PI);
-			// _imageDataCtx.clip();
-			// _imageDataCtx.restore();
 		};
 	};
 })();
