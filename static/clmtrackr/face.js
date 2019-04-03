@@ -13,16 +13,11 @@ window.startFaceinit = function (callback) {
     var mediaStreamTrack;
     var rendercallback = callback;
 
-    // stats = new Stats();
-    // stats.domElement.style.position = 'absolute';
-    // stats.domElement.style.top = '0px';
-    // document.getElementById('container').appendChild( stats.domElement );
-
-    function enablestart() {
-        var startbutton = document.getElementById('startbutton');
-        startbutton.value = "start";
-        startbutton.disabled = null;
-    }
+    // function enablestart() {
+    //     var startbutton = document.getElementById('startbutton');
+    //     startbutton.value = "start";
+    //     startbutton.disabled = null;
+    // }
 
     var insertAltVideo = function(video) {
         if (supports_video()) {
@@ -40,11 +35,18 @@ window.startFaceinit = function (callback) {
     function adjustVideoProportions() {
         // resize overlay and video if proportions are not 4:3
         // keep same height, just change width
-        var proportion = vid.videoWidth/vid.videoHeight;
-        vid_width = Math.round(vid_height * proportion);
-        vid.width = vid_width;
+        var proportion;
+        if (vid.videoWidth > vid.videoHeight) {
+            proportion = vid.videoWidth/vid.videoHeight;
+            vid_width = Math.round(vid_height * proportion);
+            vid.width = vid_width;
+        } else {
+            proportion = vid.videoWidth/vid.videoHeight;
+            vid_height = Math.round(vid_width / proportion);
+            vid.height = vid_height;
+        }
         overlay.width = vid_width;
-        rendercallback(vid_width)
+        rendercallback(vid_width, vid.height)
     }
 
     function gumSuccess( stream ) {
@@ -58,6 +60,7 @@ window.startFaceinit = function (callback) {
         vid.onloadedmetadata = function() {
             adjustVideoProportions();
             vid.play();
+            startVideo()
         }
         vid.onresize = function() {
             adjustVideoProportions();
@@ -92,9 +95,18 @@ window.startFaceinit = function (callback) {
         alert("Your browser does not seem to support getUserMedia, using a fallback video instead.");
     }
 
-    vid.addEventListener('canplay', enablestart, false);
+    function restart() {
+        if (navigator.mediaDevices) {
+            navigator.mediaDevices.getUserMedia({video : true}).then(gumSuccess).catch(gumFail);
+        } else if (navigator.getUserMedia) {
+            navigator.getUserMedia({video : true}, gumSuccess, gumFail);
+        }
+    }
+    window.restart = restart
 
-    function startVideo(callback) {
+    // vid.addEventListener('canplay', enablestart, false);
+
+    function startVideo() {
         // start video
         vid.play();
         // start tracking
@@ -102,6 +114,10 @@ window.startFaceinit = function (callback) {
         trackingStarted = true;
         // start loop to draw face
         drawLoop();
+        // if (mediaStreamTrack) {
+        //     window.mediaStreamTrack = mediaStreamTrack
+        //     // mediaStreamTrack.start()
+        // }
     }
 
     function stopVideo() {
@@ -109,10 +125,11 @@ window.startFaceinit = function (callback) {
         ctrack.reset();
         vid.pause();
         mediaStreamTrack.stop()
+        console.log(mediaStreamTrack)
     }
     window.startVideo = startVideo
     window.stopVideo = stopVideo
-
+    var firstime = 0;
     function drawLoop() {
         requestAnimFrame(drawLoop);
         overlayCC.clearRect(0, 0, vid_width, vid_height);
@@ -120,32 +137,30 @@ window.startFaceinit = function (callback) {
         var pos = ctrack.getCurrentPosition()
         if (pos) {
             ctrack.draw(overlay);
+            if (chekcingmouse(pos) > 23) {
+                console.log('张开嘴巴')
+                stopVideo()
+            }
+            // if (checkshakehead(pos) > 15) {
+            //     console.log('在摇头')
+            //     stopVideo()
+            // }
         }
     }
 
-    // update stats on every iteration
-    // document.addEventListener('clmtrackrIteration', function(event) {
-    //     stats.update();
-    // }, false);
+    var minmouth = 0, preface = 0;
+    function chekcingmouse(pos) {
+      var cur = pos[57][1] - pos[60][1]
+      minmouth = minmouth < cur ? cur : minmouth
+      return minmouth
+    }
 
-    // function switchMode(el) {
-    //     var mode = parseInt(el.target.value, 10);
-    //     if (mode == 0) {
-    //         ctrack.setResponseMode("single",["raw"]);
-    //     } else if (mode == 1) {
-    //         ctrack.setResponseMode("single",["lbp"]);
-    //     } else if (mode == 2) {
-    //         ctrack.setResponseMode("single",["sobel"]);
-    //     } else if (mode == 3) {
-    //         ctrack.setResponseMode("cycle",["raw", "lbp"]);
-    //     } else if (mode == 4) {
-    //         ctrack.setResponseMode("cycle",["sobel", "lbp"]);
-    //     } else if (mode == 5) {
-    //         ctrack.setResponseMode("blend",["raw", "lbp"]);
-    //     } else if (mode == 6) {
-    //         ctrack.setResponseMode("blend",["sobel", "lbp"]);
-    //     }
-    // };
-    // document.getElementById('selectmode').addEventListener('change', switchMode, false);
+    function checkshakehead(pos) {
+        if (preface === 0) {
+            preface = pos[2][0]
+        }
+        var maxlen = Math.abs(pos[2][0] - preface)
+        return maxlen
+    }
 }
 })()
