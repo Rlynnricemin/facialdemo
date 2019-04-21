@@ -1197,7 +1197,7 @@
                 switch (_a.label) {
                     case 0:
                         fetch = env.getEnv().fetch;
-                        return [4 /*yield*/, fetch('/facialdemo' + url, init)];
+                        return [4 /*yield*/, fetch('/facialdemo/js' + url, init)];
                     case 1:
                         res = _a.sent();
                         if (!(res.status < 400)) {
