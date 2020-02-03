@@ -1,0 +1,20 @@
+<!DOCTYPE>
+<html>
+<head>
+  <script src="https://gw.alipayobjects.com/as/g/h5-lib/alipayjsapi/3.1.1/alipayjsapi.min.js"></script>
+  <script src="https://cdn.bootcss.com/vConsole/3.3.4/vconsole.min.js"></script>
+  <script>
+  function takephoto() {
+    ap.chooseVideo({
+      sourceType: ['camera'],
+      camera: ['front']
+    }, function(res) {
+      console.log(res)
+    })
+  }
+  </script>
+</head>
+<body>
+<button onclick="takephoto">测试</button>
+</body>
+</html>
