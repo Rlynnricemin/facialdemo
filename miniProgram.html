@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
   <script>
   function takephoto() {
-    ap.chooseVideo({
-      sourceType: ['camera'],
-      camera: ['front']
-    }, function(res) {
-      console.log(res)
-    })
+    my.postMessage({'method': 'chooseVideo'})
+    // ap.chooseVideo({
+    //   sourceType: ['camera'],
+    //   camera: ['front']
+    // }, function(res) {
+    //   console.log(res)
+    // })
   }
   </script>
 </head>
